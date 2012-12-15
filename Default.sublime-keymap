@@ -1,0 +1,7 @@
+[
+  {
+    "keys": ["ctrl+enter"]
+    , "command": "django_click"
+    , "context": { "key": "selector", "operator": "equal", "operand": "text.html.django" }
+  }
+]
