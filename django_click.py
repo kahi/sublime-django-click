@@ -1,22 +1,29 @@
-import sublime
-import sublime_plugin
+import re, os
+
+import sublime, sublime_plugin
 
 class DjangoClickCommand(sublime_plugin.TextCommand):
+	RE_BLOCK = re.compile(r'{%%\s+(?P<tag>%s)\s+[\'"]?(?P<name>[/\.\-_a-zA-Z0-9]+)[\'"]?\s+%%}' % 
+        	'|'.join(['include', 'extends', 'includeblocks']))
+	TEMPLATE_DIR = 'templates'
+	
 	def run(self, edit):
 		region = self.view.sel()[0]
 		line = self.view.line(region)
 		line_contents = self.view.substr(line)
 
-		# get the clicked path
-		wanted_file_shortpath = line_contents.replace('{% extends', '').replace('{% includeblocks', '').replace('{% include ', '').replace(' %}', '').replace("'", '').replace('\"', '').strip()
+		match = re.match(self.RE_BLOCK, line_contents)
+		
+		#is it the tag line we support?
+		if match:
+			tag, target =  match.groupdict()['tag'], match.groupdict()['name']
 
-		# get the base-path of current file
-		this_file_name = self.view.file_name().split('/templates/')
+			# get the base-path of current file
+			base, current_file = self.view.file_name().split('%(separator)stemplates%(separator)s' % dict(separator=os.path.sep))
 
-		# merge them - thats file path to open
-		wanted_file_fullpath = this_file_name[0] + '/templates/' + wanted_file_shortpath
-		# print 'Path to open: ', wanted_file_fullpath
+			# get the target file path
+			tar = os.path.join(base, self.TEMPLATE_DIR, target)
 
-		# open!
-		window = sublime.active_window()
-		window.open_file(wanted_file_fullpath, sublime.ENCODED_POSITION)
+			# open it!
+			window = sublime.active_window()
+			window.open_file(tar, sublime.ENCODED_POSITION)
