@@ -9,6 +9,9 @@ class MatchTests(unittest.TestCase):
             (('extends', ['_base/base.html']), "{%extends '_base/base.html' %}"),
             (('extends', ['ur base/are belong to us.html']), "{%extends 'ur base/are belong to us.html' %}"),
             (('include', ['_base/base.html']), '{% include "_base/base.html" %}'),
+            (('include', ['_base/base.html']), '{%  include "_base/base.html"   %}'),
+            (('include', ['_base/base.html']), '{% include "_base/base.html"%}'),
+            (('include', ['_base/base.html']), '{%include "_base/base.html"%}'),
             (('includeblocks', ['_base/base.html', '_base templates/base.html']), 
                 "{% includeblocks '_base/base.html' '_base templates/base.html' %}"),
         ]

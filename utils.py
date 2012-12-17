@@ -5,7 +5,7 @@ def parse_tag(line):
         parses include|extends and similar tags and returns (tag_name, targets) tuple
     """
 
-    RE_BLOCK = re.compile(r'{%%\s?(?P<tag>%s)\s+(?P<names>.+)?[\'"]?\s?%%}' % 
+    RE_BLOCK = re.compile(r'{%%\s*(?P<tag>%s)\s+(?P<names>.+)?[\'"]?\s*%%}' % 
             '|'.join(['include', 'extends', 'includeblocks']))
     RE_NAMES = re.compile(r'[\'"]([/\.\-_a-zA-Z0-9\s]+)[\'"]')
     
