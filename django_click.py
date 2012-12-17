@@ -1,22 +1,26 @@
-import sublime
-import sublime_plugin
+import os
+import sublime, sublime_plugin
+from utils import parse_tag
+
 
 class DjangoClickCommand(sublime_plugin.TextCommand):
+	TEMPLATE_DIR = 'templates'	
+
 	def run(self, edit):
 		region = self.view.sel()[0]
 		line = self.view.line(region)
 		line_contents = self.view.substr(line)
 
-		# get the clicked path
-		wanted_file_shortpath = line_contents.replace('{% extends', '').replace('{% includeblocks', '').replace('{% include ', '').replace(' %}', '').replace("'", '').replace('\"', '').strip()
+		tag, targets = parse_tag(line_contents)
 
-		# get the base-path of current file
-		this_file_name = self.view.file_name().split('/templates/')
+		if tag:
+			# get the base-path of current file
+			base, current_file = self.view.file_name().split('%(separator)stemplates%(separator)s' % dict(separator=os.path.sep))
 
-		# merge them - thats file path to open
-		wanted_file_fullpath = this_file_name[0] + '/templates/' + wanted_file_shortpath
-		# print 'Path to open: ', wanted_file_fullpath
+			for one in targets:
+				# get the target file path
+				tar = os.path.join(base, self.TEMPLATE_DIR, one) 
 
-		# open!
-		window = sublime.active_window()
-		window.open_file(wanted_file_fullpath, sublime.ENCODED_POSITION)
+				# open it!
+				window = sublime.active_window()
+				window.open_file(tar, sublime.ENCODED_POSITION)
