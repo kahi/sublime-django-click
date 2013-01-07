@@ -12,10 +12,13 @@ class MatchTests(unittest.TestCase):
             (('include', ['_base/base.html']), '{%  include "_base/base.html"   %}'),
             (('include', ['_base/base.html']), '{% include "_base/base.html"%}'),
             (('include', ['_base/base.html']), '{%include "_base/base.html"%}'),
-            (('includeblocks', ['_base/base.html', '_base templates/base.html']), 
+            (('include', ['_base/base.html']), ' {%include "_base/base.html"%}'),
+            (('include', ['_base/base.html']), 'hnidopich{%include "_base/base.html"%}  '),
+            (('include', ['lorem-ipsum/__dolorem']), "    {% include 'lorem-ipsum/__dolorem' %}"),
+            (('includeblocks', ['_base/base.html', '_base templates/base.html']),
                 "{% includeblocks '_base/base.html' '_base templates/base.html' %}"),
         ]
-        
+
         for exp, line in cases:
             self.assertEqual(exp, parse_tag(line))
 
