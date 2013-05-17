@@ -15,7 +15,7 @@ class DjangoClickCommand(sublime_plugin.TextCommand):
 
 		if tag:
 			# get the base-path of current file
-			base, current_file = self.view.file_name().split('%(separator)stemplates%(separator)s' % dict(separator=os.path.sep))
+			base, current_file = self.view.file_name().split('%(separator)stemplates%(separator)s' % dict(separator=os.path.sep), 1)
 
 			for one in targets:
 				# get the target file path
