@@ -1,5 +1,9 @@
 import unittest
-from utils import parse_tag
+import sublime, sublime_plugin
+try:
+    from utils import parse_tag
+except ImportError:
+    from .utils import parse_tag
 
 
 class MatchTests(unittest.TestCase):
@@ -24,4 +28,3 @@ class MatchTests(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
-
